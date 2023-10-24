@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tipos de Cambio Juego</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    
+</head>
+<body>
+    <div class="container">
+        <h1>CALCULADORA DE SALDOS</h1>
+        <div class="input-group">
+            <label>Apuesta Jugador A:</label>
+            <input type="number" id="apuestaA" class = "jugadorA" >
+            <select id="monedaA" class="divisas">
+                <option value="USDT" data-thumbnail="./img/usdt.png">USDT</option>
+                <option value="EURO" data-thumbnail="./img/euro.png">EURO</option>
+                <option value="CREDITOS" data-thumbnail="./img/credito.png" class="creditos">CREDITS</option>
+            </select>
+        </div>
+        <div class="input-group" id="calcular">
+            <label>Moneda Jugador B:</label>
+            <select id="monedaB" class="divisas">
+                <option value="USDT" data-thumbnail="./img/usdt.png">USDT</option>
+                <option value="EURO" data-thumbnail="./img/euro.png">EURO</option>
+                <option value="CREDITOS" data-thumbnail="./img/credito.png" class="creditos">CREDITS</option>
+            </select>
+        </div>
+        <button onclick="calculateBets()">Calcular Apuestas</button>
+        <h3 id="apuestaBOutput"></h3>
+        <div class="input-group">
+            <label>Ganador:</label>
+            <select id="ganador" class="ganador">
+                <option value="A">Jugador A</option>
+                <option value="B">Jugador B</option>
+            </select>
+        </div>
+        <button onclick="declareWinner()">Declarar Ganador</button>
+        <div id="resultados"></div>
+        <button onclick="resetSaldoA()">Resetear Saldo Jugador A</button>
+        <button onclick="resetSaldoB()">Resetear Saldo Jugador B</button>
+        <button onclick="resetAll()">Resetear Saldo de Ambos Jugadores</button>
+
+    </div>
+    <script src="scripts.js"></script>
+</body>
+</html>

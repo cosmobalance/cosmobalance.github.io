@@ -1,0 +1,133 @@
+/* styles.css */
+
+/* Variables para colores */
+:root {
+    --primary-color: #3453db;
+    --secondary-color: #2c3e50;
+    --background-color: #416088;
+    --text-color:var(--primary-color);
+    --light-text-color: #95a5a6;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--background-color);
+    margin: 0;
+    padding: 0;
+    color: var(--text-color);
+    text-align: center;
+    
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #a1a1a1;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --background-color: #ffffff;
+}
+
+
+
+h1, h2, h3 {
+    color: var(--primary-color);
+    margin-top: 20px;
+    
+}
+
+input[type="text"], input[type="number"], select {
+    width: 100%;
+    padding: 10px 15px;
+    margin: 10px 0;
+    border: 1px solid var(--light-text-color);
+    border-radius: 4px;
+    background-color: var(--background-color);
+}
+
+.ganador{
+    font-size: 14px;
+    font-weight: bold;
+}
+
+input[type="number"]{
+    font-size: 16px;
+    }
+    
+
+button {
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #42c5af;
+}
+
+.balance-display {
+    background-color: var(--secondary-color);
+    color: #fff;
+    padding: 15px;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+
+.balance-display p {
+    margin: 5px 0;
+}
+
+.notification {
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 15px;
+    background-color: #f39c12;
+    color: #fff;
+}
+
+.notification.error {
+    background-color: #e74c3c;
+}
+
+.notification.success {
+    background-color: #2ecc71;
+}
+
+.jugadorA{
+    max-width: 100px;
+}
+
+.divisas{
+    max-width: 100px;
+}
+
+.ganador{
+    max-width: 150px;
+}
+
+
+.input-group{
+    margin-left: 10px ;
+}
+
+#resultados{
+    margin-top: 20px;
+}
+
+
+.img-flag {
+    width: 18px;
+
+}
+
+.creditos{
+    text-align: center;
+}
+
+#calcular{
+    margin-bottom: 15px;
+}
