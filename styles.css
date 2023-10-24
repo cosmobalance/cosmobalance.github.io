@@ -37,7 +37,7 @@ h1, h2, h3 {
 }
 
 input[type="text"], input[type="number"], select {
-    width: 100%;
+    width: 20%;
     padding: 10px 15px;
     margin: 10px 0;
     border: 1px solid var(--light-text-color);
@@ -130,4 +130,22 @@ button:hover {
 
 #calcular{
     margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.conversion{
+    margin: 20px;
 }
