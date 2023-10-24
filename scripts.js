@@ -1,22 +1,31 @@
-const CONVERSION_RATES = {
-    "USDT_TO_EURO": 0.944,
-    "USDT_TO_USDT": 1,
-    "EURO_TO_EURO": 1,
-    "EURO_TO_USDT": 1.06,
-    "CREDITOS_TO_EURO": 1.4 / 50,
-    "CREDITOS_TO_USDT": 1.5 / 50,
-    "USDT_TO_CREDITOS": 50 / 1.5,
-    "EURO_TO_CREDITOS": 50 / 1.4
-};
-
 let saldo_jugadorA = {"USDT": 0, "EURO": 0, "CREDITOS": 0};
 let saldo_jugadorB = {"USDT": 0, "EURO": 0, "CREDITOS": 0};
 
+function getConversionRate(fromCurrency, toCurrency) {
+    if (fromCurrency === "USDT" && toCurrency === "EURO") {
+        return parseFloat(document.getElementById("usdtToEuro").value);
+    } else if (fromCurrency === "EURO" && toCurrency === "USDT") {
+        return parseFloat(document.getElementById("euroToUsdt").value);
+    } else {
+        let key = `${fromCurrency}_TO_${toCurrency}`;
+        let rates = {
+            "USDT_TO_USDT": 1,
+            "EURO_TO_EURO": 1,
+            "CREDITOS_TO_EURO": 1.4 / 50,
+            "CREDITOS_TO_USDT": 1.5 / 50,
+            "USDT_TO_CREDITOS": 50 / 1.5,
+            "EURO_TO_CREDITOS": 50 / 1.4
+        };
+        return rates[key] || 1;
+    }
+}
+
 function convertCurrency(amount, fromCurrency, toCurrency) {
-    let conversionKey = `${fromCurrency}_TO_${toCurrency}`;
-    let rate = CONVERSION_RATES[conversionKey] || 1;
+    let rate = getConversionRate(fromCurrency, toCurrency);
     return Math.round(amount * rate);
 }
+
+
 
 function calculateBets() {
     let apuestaA = parseFloat(document.getElementById("apuestaA").value);
