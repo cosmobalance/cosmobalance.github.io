@@ -91,11 +91,13 @@ select {
     justify-content: start;  /* Alinea los elementos al inicio del contenedor */
     align-items: baseline;   /* Alinea el texto de base de los elementos */
     margin-bottom: 15px;     /* Ajusta según lo cerca que quieras que estén los grupos */
+
 }
 
 .input-group2 label {
     margin-right: 5px;      /* Espacio entre el label y el input, puedes ajustarlo según prefieras */
     flex: 0 0 auto;         /* Permitir que el label se ajuste según su contenido */
+    
 }
 
 .input-group2 input{
@@ -229,15 +231,71 @@ button.selected {
 }
 
 /* Media Queries */
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 1500px) {
     .container-left, .container, .container-right {
         max-width: calc(100% / 3 - 20px); /* Ajustar el ancho de los contenedores para pantallas más pequeñas */
     }
 }
+/* Ajustes para pantallas medianas como tablets */
+@media (max-width: 100px) {
+    body {
+        flex-direction: column; /* Cambia la dirección a columna para que los contenedores se apilen verticalmente */
+    }
+
+    .container-left, .container, .container-right {
+        max-width: 100%; /* Los contenedores ahora ocuparán el ancho completo de la pantalla */
+        margin-bottom: 20px;
+    }
+
+    input[type="number"], .input-group2 input {
+        width: 70%; /* Aumenta el ancho para mejor visibilidad en pantallas pequeñas */
+        margin: 10px auto; /* Centra los campos de entrada */
+    }
+    
+    select {
+        width: 70%; /* Aumenta el ancho para mejor visibilidad en pantallas pequeñas */
+        margin: 10px auto; /* Centra el elemento select */
+    }
+
+    .input-group2 {
+        flex-direction: column; /* Los elementos se apilarán verticalmente */
+        align-items: center; /* Centra los elementos horizontalmente */
+    }
+
+    .input-group2 label {
+        margin-right: 0; 
+        margin-bottom: 5px; /* Espacio entre el label y el input en modo vertical */
+    }
+}
 
 @media only screen and (max-width: 992px) {
+    body {
+        flex-direction: column; /* Cambia la dirección a columna para que los contenedores se apilen verticalmente */
+    }
+
     .container-left, .container, .container-right {
-        max-width: calc(100% / 2 - 20px); /* Ajustar el ancho de los contenedores para pantallas medianas */
+        max-width: 100%; /* Los contenedores ahora ocuparán el ancho completo de la pantalla */
+        margin-bottom: 20px;
+    }
+
+    input[type="number"], .input-group2 input {
+        width: 70%; /* Aumenta el ancho para mejor visibilidad en pantallas pequeñas */
+        margin: 10px auto; /* Centra los campos de entrada */
+    }
+    
+    select {
+        width: 70%; /* Aumenta el ancho para mejor visibilidad en pantallas pequeñas */
+        margin: 10px auto; /* Centra el elemento select */
+    }
+
+    .input-group2 {
+        flex-direction: column; /* Los elementos se apilarán verticalmente */
+        align-items: center; /* Centra los elementos horizontalmente */
+    }
+
+    .input-group2 label {
+        margin-right: 0; 
+        margin-bottom: 5px; /* Espacio entre el label y el input en modo vertical */
     }
 }
 
@@ -245,5 +303,36 @@ button.selected {
     .container-left, .container, .container-right {
         max-width: 100%; /* Ajustar el ancho de los contenedores para dispositivos móviles */
         margin-bottom: 20px; /* Añadir un margen inferior para espaciar los contenedores en pantallas pequeñas */
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        flex-direction: column; /* Cambia la dirección a columna para que los contenedores se apilen verticalmente */
+    }
+
+    .container-left, .container, .container-right {
+        max-width: 100%; /* Los contenedores ahora ocuparán el ancho completo de la pantalla */
+        margin-bottom: 20px;
+    }
+
+    input[type="number"], .input-group2 input {
+        width: 70%; /* Aumenta el ancho para mejor visibilidad en pantallas pequeñas */
+        margin: 10px auto; /* Centra los campos de entrada */
+    }
+    
+    select {
+        width: 70%; /* Aumenta el ancho para mejor visibilidad en pantallas pequeñas */
+        margin: 10px auto; /* Centra el elemento select */
+    }
+
+    .input-group2 {
+        flex-direction: column; /* Los elementos se apilarán verticalmente */
+        align-items: center; /* Centra los elementos horizontalmente */
+    }
+
+    .input-group2 label {
+        margin-right: 0; 
+        margin-bottom: 5px; /* Espacio entre el label y el input en modo vertical */
     }
 }
