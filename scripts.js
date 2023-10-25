@@ -100,16 +100,49 @@ function calcularComisionCreditos(cantidad_creditos) {
     }
 }
 
-// ... (otros códigos)
+function setInitialBalances() {
+    // Jugador A
+    let monedaA = document.querySelector('.jugadorA + .divisas').value;
+    let saldoA = parseFloat(document.getElementById('saldo_jugadorA').value) || 0;
+    saldo_jugadorA[monedaA] = saldoA;
+    
+    // Jugador B
+    let monedaB = document.querySelector('.jugadorB + .divisas').value;
+    let saldoB = parseFloat(document.getElementById('saldo_jugadorB').value) || 0;
+    saldo_jugadorB[monedaB] = saldoB;
+
+    displayResults(); // Esta función mostrará los saldos actualizados
+}
+
+
+// Al cargar la página, se recuperan los valores guardados
+window.onload = function() {
+    if (localStorage.getItem('usdtToEuro')) {
+        document.getElementById('usdtToEuro').value = localStorage.getItem('usdtToEuro');
+    }
+
+    if (localStorage.getItem('euroToUsdt')) {
+        document.getElementById('euroToUsdt').value = localStorage.getItem('euroToUsdt');
+    }
+};
+
+// Función que guarda los valores en localStorage
+function saveToLocalStorage() {
+    localStorage.setItem('usdtToEuro', document.getElementById('usdtToEuro').value);
+    localStorage.setItem('euroToUsdt', document.getElementById('euroToUsdt').value);
+}
+
+// Agrega un event listener a los campos input para guardar cambios
+document.getElementById('usdtToEuro').addEventListener('change', saveToLocalStorage);
+document.getElementById('euroToUsdt').addEventListener('change', saveToLocalStorage);
 
 
 
-function declareWinner() {
+function declareWinner(ganador) {
     let apuestaA = parseFloat(document.getElementById("apuestaA").value);
     let monedaA = document.getElementById("monedaA").value;
     let monedaB = document.getElementById("monedaB").value;
     let apuestaB = convertCurrency(apuestaA, monedaA, monedaB);
-    let ganador = document.getElementById("ganador").value;
 
     let saldoGanado, comision;
     if (ganador === "A") {
@@ -127,31 +160,78 @@ function declareWinner() {
     displayResults();
 }
 
+
 function displayResults() {
-    let resultadosDiv = document.getElementById("resultados");
-    resultadosDiv.innerHTML = `
-        <h2>SALDOS</h2>
-        <h3>Saldo Jugador A: USDT: ${saldo_jugadorA['USDT']}, EURO: ${saldo_jugadorA['EURO']}, CREDITOS: ${saldo_jugadorA['CREDITOS']}</h3>
-        <h3>Saldo Jugador B: USDT: ${saldo_jugadorB['USDT']}, EURO: ${saldo_jugadorB['EURO']}, CREDITOS: ${saldo_jugadorB['CREDITOS']}</h3>
-    `;
+    document.getElementById("saldoA-USDT").textContent = saldo_jugadorA['USDT'];
+    document.getElementById("saldoA-EURO").textContent = saldo_jugadorA['EURO'];
+    document.getElementById("saldoA-CREDITOS").textContent = saldo_jugadorA['CREDITOS'];
+
+    document.getElementById("saldoB-USDT").textContent = saldo_jugadorB['USDT'];
+    document.getElementById("saldoB-EURO").textContent = saldo_jugadorB['EURO'];
+    document.getElementById("saldoB-CREDITOS").textContent = saldo_jugadorB['CREDITOS'];
 }
+
+// ... restante del archivo ...
+
+function copyBalancesToClipboard() {
+    let saldosString = "";
+
+    // Jugador A
+    if (saldo_jugadorA['USDT'] !== 0) {
+        saldosString += `Jugador A - USDT: ${saldo_jugadorA['USDT']}\n`;
+    }
+    if (saldo_jugadorA['EURO'] !== 0) {
+        saldosString += `Jugador A - EURO: ${saldo_jugadorA['EURO']}\n`;
+    }
+    if (saldo_jugadorA['CREDITOS'] !== 0) {
+        saldosString += `Jugador A - CREDITOS: ${saldo_jugadorA['CREDITOS']}\n`;
+    }
+
+    // Jugador B
+    if (saldo_jugadorB['USDT'] !== 0) {
+        saldosString += `Jugador B - USDT: ${saldo_jugadorB['USDT']}\n`;
+    }
+    if (saldo_jugadorB['EURO'] !== 0) {
+        saldosString += `Jugador B - EURO: ${saldo_jugadorB['EURO']}\n`;
+    }
+    if (saldo_jugadorB['CREDITOS'] !== 0) {
+        saldosString += `SJugador B - CREDITOS: ${saldo_jugadorB['CREDITOS']}\n`;
+    }
+
+    let textArea = document.createElement("textarea");
+    textArea.value = saldosString;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("Copy");
+    textArea.remove();
+
+    showToast();
+}
+
+function showToast() {
+    let toast = document.getElementById("toast");
+    toast.classList.add("show");
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 3000); // Después de 3 segundos, el toast se ocultará automáticamente.
+}
+
+// ... restante del archivo ...
+
 
 function resetSaldoA() {
     saldo_jugadorA = {"USDT": 0, "EURO": 0, "CREDITOS": 0};
-    document.getElementById("apuestaA").value = '';
     displayResults();
 }
 
 function resetSaldoB() {
     saldo_jugadorB = {"USDT": 0, "EURO": 0, "CREDITOS": 0};
-    document.getElementById("apuestaA").value = '';
     displayResults();
 }
 
 function resetAll() {
     saldo_jugadorA = {"USDT": 0, "EURO": 0, "CREDITOS": 0};
     saldo_jugadorB = {"USDT": 0, "EURO": 0, "CREDITOS": 0};
-    document.getElementById("apuestaA").value = '';
     document.getElementById("apuestaBOutput").textContent = '';
     displayResults();
 }

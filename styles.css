@@ -16,17 +16,44 @@ body {
     padding: 0;
     color: var(--text-color);
     text-align: center;
-    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Esto asegura que los contenedores se centren verticalmente en la página */
+    flex-wrap: wrap; /* En caso de que los contenedores no quepan en una sola fila, se ajustarán adecuadamente */
+
 }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
+.container-left, .container, .container-right {
+    box-sizing: border-box; /* Esto asegura que el padding no afecte el ancho total del contenedor */
     padding: 20px;
+    margin: 0 auto;
+    border: 1px solid #ccc; /* Agrega un borde para visualizar los contenedores */
+    flex: 1; /* Esto les da a los contenedores la capacidad de crecer y ocupar el espacio disponible */
+    max-width: calc(100% / 5 - 20px); /* Esto asegura que los contenedores no ocupen más del 33% del ancho total de la pantalla, restando los márgenes */
     background-color: #a1a1a1;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     --background-color: #ffffff;
+    
 }
+
+.container-left{
+    
+    height: 500px;
+}
+
+.container-right{
+    height: 500px;
+}
+
+
+
+
+.container {
+    max-width: 800px;
+}
+
+
 
 
 
@@ -36,23 +63,50 @@ h1, h2, h3 {
     
 }
 
-input[type="text"], input[type="number"], select {
-    width: 20%;
+input[type="number"]{
+    width: 12%;
     padding: 10px 15px;
     margin: 10px 0;
     border: 1px solid var(--light-text-color);
     border-radius: 4px;
     background-color: var(--background-color);
+    font-size: 16px;
+    margin-top: 5px;
+    text-align: center;
 }
+
+select {
+    width: 100%;
+}
+
+
+
+.input-group2 {
+    margin-left: 20px;
+    display: flex;
+    justify-content: start;  /* Alinea los elementos al inicio del contenedor */
+    align-items: baseline;   /* Alinea el texto de base de los elementos */
+    margin-bottom: 15px;     /* Ajusta según lo cerca que quieras que estén los grupos */
+}
+
+.input-group2 label {
+    margin-right: 5px;      /* Espacio entre el label y el input, puedes ajustarlo según prefieras */
+    flex: 0 0 auto;         /* Permitir que el label se ajuste según su contenido */
+}
+
+.input-group2 input{
+    width: 25%;
+    text-align: center;
+}
+
+
 
 .ganador{
     font-size: 14px;
     font-weight: bold;
 }
 
-input[type="number"]{
-    font-size: 16px;
-    }
+
     
 
 button {
@@ -97,10 +151,6 @@ button:hover {
     background-color: #2ecc71;
 }
 
-.jugadorA{
-    max-width: 100px;
-}
-
 .divisas{
     max-width: 100px;
 }
@@ -109,10 +159,6 @@ button:hover {
     max-width: 150px;
 }
 
-
-.input-group{
-    margin-left: 10px ;
-}
 
 #resultados{
     margin-top: 20px;
@@ -138,14 +184,42 @@ label {
     font-weight: bold;
 }
 
-input[type="number"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-top: 5px;
+
+button.selected {
+    background-color: #4CAF50; /* Color verde, puedes cambiarlo */
+    color: white;
 }
 
-.conversion{
-    margin: 20px;
+.copy-btn {
+    cursor: pointer;
+    --primary-color: #3453db;
+    padding: 6px 6px;
+    margin-left: 5px;
+    border-radius: 4px;
+    border: none;
+    margin-bottom: 10px;
+
+}
+
+.toast {
+    visibility: hidden;
+    max-width: 600px;
+    height: 50px;
+    line-height: 50px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    position: fixed;
+    z-index: 9999;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+    transform: translateX(-50%);
+    transition: visibility 0.5s, opacity 0.5s linear;
+    opacity: 0;
+}
+.toast.show {
+    visibility: visible;
+    opacity: 1;
 }

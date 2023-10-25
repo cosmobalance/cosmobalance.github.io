@@ -12,20 +12,56 @@
     
 </head>
 <body>
+<!-- Contenedor de la izquierda -->
+<div class="container-left">
+    <h1>CONVERSIONES</h1>
+    
+    <div class="input-group2">
+        <label for="usdtToEuro">EURO a USDT</label>
+        <input type="number" id="usdtToEuro" class="conversion" placeholder="Tasa de USDT a EURO">
+    </div>
+    
+    <div class="input-group2">
+        <label for="euroToUsdt">USDT A EURO</label>
+        <input type="number" id="euroToUsdt" class="conversion" placeholder="Tasa de EURO a USDT">
+    </div>
+    <h2>CARGAR SALDO</h2>
+    <div class="input-group2">
+
+        <label>Jugador A</label>
+        <input type="number" id="saldo_jugadorA" class = "jugadorA" placeholder="SALDO">
+        <select class="divisas">
+            <option value="USDT" data-thumbnail="./img/usdt.png">USDT</option>
+            <option value="EURO" data-thumbnail="./img/euro.png">EURO</option>
+            <option value="CREDITOS" data-thumbnail="./img/credito.png" class="creditos">CREDITS</option>
+
+        </select>
+    </div>
+
+    <div class="input-group2">
+        <label>Jugador B</label>
+        <input type="number" id="saldo_jugadorB" class = "jugadorB" placeholder="SALDO">
+        <select  class="divisas">
+            <option value="USDT" data-thumbnail="./img/usdt.png">USDT</option>
+            <option value="EURO" data-thumbnail="./img/euro.png">EURO</option>
+            <option value="CREDITOS" data-thumbnail="./img/credito.png" class="creditos">CREDITS</option>
+
+        </select>
+    </div>
+    
+    <button onclick="setInitialBalances()">Establecer Saldos</button>
+</div>
+
+</div>
+
+
     <div class="container">
         <h1>CALCULADORA DE SALDOS</h1>
 
-        <div class="input-group">
-            <label for="usdtToEuro">USDT a EURO:</label>
-            <input type="text" id="usdtToEuro" class="conversion" placeholder="Tasa de USDT a EURO">
-            
-            <label for="euroToUsdt">EURO a USDT:</label>
-            <input type="text" id="euroToUsdt" class="conversion" placeholder="Tasa de EURO a USDT">
-
-        </div>
+        
         <div class="input-group">
             <label>Apuesta Jugador A:</label>
-            <input type="number" id="apuestaA" class = "jugadorA" >
+            <input type="number" id="apuestaA" class = "jugadorA" placeholder="APUESTA">
             <select id="monedaA" class="divisas">
                 <option value="USDT" data-thumbnail="./img/usdt.png">USDT</option>
                 <option value="EURO" data-thumbnail="./img/euro.png">EURO</option>
@@ -46,18 +82,40 @@
         </div>
         <button onclick="calculateBets()">Calcular Apuestas</button>
         <h3 id="apuestaBOutput"></h3>
+        <!-- Otros elementos ... -->
         <div class="input-group">
             <label>Ganador:</label>
-            <select id="ganador" class="ganador">
-                <option value="A">Jugador A</option>
-                <option value="B">Jugador B</option>
-            </select>
+            <button onclick="declareWinner('A')">Jugador A</button>
+            <button onclick="declareWinner('B')">Jugador B</button>
         </div>
-        <button onclick="declareWinner()">Declarar Ganador</button>
-        <div id="resultados"></div>
+        <!-- Otros elementos ... -->
+        
+        <div id="resultados">
+            <h2>SALDOS</h2>
+            <h3>Saldo Jugador A: 
+                USDT: <span id="saldoA-USDT">0</span>,
+                EURO: <span id="saldoA-EURO">0</span>,
+                CREDITOS: <span id="saldoA-CREDITOS">0</span>
+            </h3>
+            <h3>Saldo Jugador B: 
+                USDT: <span id="saldoB-USDT">0</span>,
+                EURO: <span id="saldoB-EURO">0</span>,
+                CREDITOS: <span id="saldoB-CREDITOS">0</span>
+            </h3>
+            <button class="copy-btn" onclick="copyBalancesToClipboard()">Copiar Saldos</button>
+            <div id="toast" class="toast">Saldos copiados al portapapeles!</div>
+        </div>
+        
         <button onclick="resetSaldoA()">Resetear Saldo Jugador A</button>
         <button onclick="resetSaldoB()">Resetear Saldo Jugador B</button>
         <button onclick="resetAll()">Resetear Saldo de Ambos Jugadores</button>
+
+    </div>
+    <div class="container-right">
+        <h2>Historial de Partidas</h2>
+        <ul id="historialPartidas"></ul>
+    </div>
+    
 
     </div>
     <script src="scripts.js"></script>
