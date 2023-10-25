@@ -44,6 +44,10 @@ body {
 
 .container-right{
     height: 500px;
+    max-height: 500px;  /* Ajusta este valor según la altura deseada */
+    
+    /* Establecemos que el contenido se desplace en caso de que exceda el tamaño del contenedor */
+    overflow-y: auto;
 }
 
 
@@ -222,4 +226,24 @@ button.selected {
 .toast.show {
     visibility: visible;
     opacity: 1;
+}
+
+/* Media Queries */
+@media only screen and (max-width: 1200px) {
+    .container-left, .container, .container-right {
+        max-width: calc(100% / 3 - 20px); /* Ajustar el ancho de los contenedores para pantallas más pequeñas */
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .container-left, .container, .container-right {
+        max-width: calc(100% / 2 - 20px); /* Ajustar el ancho de los contenedores para pantallas medianas */
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .container-left, .container, .container-right {
+        max-width: 100%; /* Ajustar el ancho de los contenedores para dispositivos móviles */
+        margin-bottom: 20px; /* Añadir un margen inferior para espaciar los contenedores en pantallas pequeñas */
+    }
 }

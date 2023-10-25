@@ -138,6 +138,8 @@ document.getElementById('euroToUsdt').addEventListener('change', saveToLocalStor
 
 
 
+document.addEventListener("DOMContentLoaded", loadGameHistory);
+
 function declareWinner(ganador) {
     let apuestaA = parseFloat(document.getElementById("apuestaA").value);
     let monedaA = document.getElementById("monedaA").value;
@@ -158,7 +160,51 @@ function declareWinner(ganador) {
     }
 
     displayResults();
+    updateGameHistory(ganador, saldoGanado);  // Agregar la actualización del historial después de determinar el ganador
 }
+
+function updateGameHistory(winner, amountWon) {
+    const historyItem = {
+        date: new Date().toLocaleString(),
+        winner: winner,
+        amountWon: amountWon
+    };
+
+    let gameHistory = JSON.parse(localStorage.getItem('gameHistory') || '[]');
+    gameHistory.push(historyItem);
+    localStorage.setItem('gameHistory', JSON.stringify(gameHistory));
+
+    displayGameHistory();
+}
+
+function displayGameHistory() {
+    let gameHistory = JSON.parse(localStorage.getItem('gameHistory') || '[]');
+    let historyContainer = document.getElementById('historialPartidas');
+    
+    // Limpiar historial existente
+    historyContainer.innerHTML = '';
+
+    gameHistory.forEach(item => {
+        let listItem = document.createElement('li');
+        listItem.textContent = `Fecha: ${item.date}, Ganador: Jugador ${item.winner}, Monto Ganado: ${item.amountWon}`;
+        historyContainer.appendChild(listItem);
+    });
+}
+
+function loadGameHistory() {
+    displayGameHistory();
+}
+
+document.getElementById('reiniciarHistorial').addEventListener('click', resetGameHistory);
+
+function resetGameHistory() {
+    // Limpiamos el historial de partidas en localStorage
+    localStorage.removeItem('gameHistory');
+    
+    // Actualizamos la visualización en la página
+    displayGameHistory();
+}
+
 
 
 function displayResults() {
