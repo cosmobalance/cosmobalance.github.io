@@ -124,6 +124,7 @@ window.onload = function() {
     if (localStorage.getItem('euroToUsdt')) {
         document.getElementById('euroToUsdt').value = localStorage.getItem('euroToUsdt');
     }
+    
 };
 
 // Función que guarda los valores en localStorage
@@ -136,9 +137,11 @@ function saveToLocalStorage() {
 document.getElementById('usdtToEuro').addEventListener('change', saveToLocalStorage);
 document.getElementById('euroToUsdt').addEventListener('change', saveToLocalStorage);
 
-
-
 document.addEventListener("DOMContentLoaded", loadGameHistory);
+
+
+
+
 
 function declareWinner(ganador) {
     let apuestaA = parseFloat(document.getElementById("apuestaA").value);
@@ -149,19 +152,31 @@ function declareWinner(ganador) {
     let saldoGanado, comision;
     if (ganador === "A") {
         comision = getCommission(apuestaA, monedaA);
-        saldoGanado = apuestaA + apuestaA - comision;
+        if (saldo_jugadorA[monedaA] != 0) {
+            saldoGanado = apuestaA - comision; // Solo sumar la apuesta descontando la comisión
+        } else {
+            saldoGanado = apuestaA + apuestaA - comision; // Sumar doble de la apuesta descontando la comisión
+        }
         saldo_jugadorA[monedaA] += saldoGanado;
         saldo_jugadorB[monedaB] -= apuestaB;
+
+
     } else {
         comision = getCommission(apuestaB, monedaB);
-        saldoGanado = apuestaB + apuestaB - comision;
+        if (saldo_jugadorB[monedaB] != 0) {
+            saldoGanado = apuestaB - comision; // Solo sumar la apuesta descontando la comisión
+        } else {
+            saldoGanado = apuestaB + apuestaB - comision; // Sumar doble de la apuesta descontando la comisión
+        }
         saldo_jugadorB[monedaB] += saldoGanado;
         saldo_jugadorA[monedaA] -= apuestaA;
+
     }
 
     displayResults();
     updateGameHistory(ganador, saldoGanado);  // Agregar la actualización del historial después de determinar el ganador
 }
+
 
 function updateGameHistory(winner, amountWon) {
     const historyItem = {
@@ -205,8 +220,6 @@ function resetGameHistory() {
     displayGameHistory();
 }
 
-
-
 function displayResults() {
     document.getElementById("saldoA-USDT").textContent = saldo_jugadorA['USDT'];
     document.getElementById("saldoA-EURO").textContent = saldo_jugadorA['EURO'];
@@ -215,7 +228,23 @@ function displayResults() {
     document.getElementById("saldoB-USDT").textContent = saldo_jugadorB['USDT'];
     document.getElementById("saldoB-EURO").textContent = saldo_jugadorB['EURO'];
     document.getElementById("saldoB-CREDITOS").textContent = saldo_jugadorB['CREDITOS'];
+
+    localStorage.setItem('saldo_jugadorA', JSON.stringify(saldo_jugadorA));
+    localStorage.setItem('saldo_jugadorB', JSON.stringify(saldo_jugadorB));
 }
+
+// Al inicio, verificamos si hay saldos guardados en localStorage
+if (localStorage.getItem('saldo_jugadorA')) {
+    saldo_jugadorA = JSON.parse(localStorage.getItem('saldo_jugadorA'));
+}
+
+if (localStorage.getItem('saldo_jugadorB')) {
+    saldo_jugadorB = JSON.parse(localStorage.getItem('saldo_jugadorB'));
+}
+
+// Luego, mostramos los saldos actuales (ya sea los predeterminados o los recuperados de localStorage)
+displayResults();
+
 
 // ... restante del archivo ...
 
