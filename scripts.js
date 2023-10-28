@@ -20,22 +20,58 @@ function getConversionRate(fromCurrency, toCurrency) {
     }
 }
 
+
+// Obtener elementos select
+let monedaAElement = document.getElementById("monedaA");
+let monedaBElement = document.getElementById("monedaB");
+
+$("#monedaA").on('select2:select', calculateBets);
+$("#monedaB").on('select2:select', calculateBets);
+
+function calculateBets() {
+    let apuestaA = parseFloat(document.getElementById("apuestaA").value);
+    
+    // Si apuestaA no es un número o es igual a 0
+    if (isNaN(apuestaA) || apuestaA === 0) {
+        document.getElementById("apuestaBOutput").value = ""; // Dejar en blanco
+        return; // Salir de la función
+    }
+
+    let monedaA = monedaAElement.value;
+    let monedaB = monedaBElement.value;
+
+    let apuestaB = convertCurrency(apuestaA, monedaA, monedaB);
+
+    document.getElementById("apuestaBOutput").value = apuestaB;
+}
+
+document.getElementById("apuestaA").addEventListener('input', function(e) {
+    let value = parseFloat(e.target.value);
+    if (value < 0) {
+        e.target.value = ""; // Puedes cambiarlo a 0 si prefieres
+        alert("Introduzca una apuesta positiva");
+    } else {
+        calculateBets();
+    }
+});
+
+document.getElementById("monedaA").addEventListener('change', calculateBets);
+document.getElementById("monedaB").addEventListener('change', calculateBets);
+
+
+
 function convertCurrency(amount, fromCurrency, toCurrency) {
     let rate = getConversionRate(fromCurrency, toCurrency);
     return Math.round(amount * rate);
 }
 
+// Aquí puedes agregar tu función getConversionRate()...
 
 
-function calculateBets() {
-    let apuestaA = parseFloat(document.getElementById("apuestaA").value);
-    let monedaA = document.getElementById("monedaA").value;
-    let monedaB = document.getElementById("monedaB").value;
-    
-    let apuestaB = convertCurrency(apuestaA, monedaA, monedaB);
-    
-    document.getElementById("apuestaBOutput").textContent = `La apuesta convertida del jugador B es: ${apuestaB} ${monedaB}`;
-}
+
+
+
+
 
 // ... (código previo)
 
@@ -102,17 +138,42 @@ function calcularComisionCreditos(cantidad_creditos) {
 
 function setInitialBalances() {
     // Jugador A
-    let monedaA = document.querySelector('.jugadorA + .divisas').value;
-    let saldoA = parseFloat(document.getElementById('saldo_jugadorA').value) || 0;
-    saldo_jugadorA[monedaA] = saldoA;
+    let monedasA = document.querySelectorAll('.cargar_jugadorA + .divisas');
+    let inputsA = document.querySelectorAll('.cargar_jugadorA');
     
+    inputsA.forEach((input, index) => {
+        let valor = parseFloat(input.value) || 0;
+        let moneda = monedasA[index].value;
+
+        if(valor !== 0) { // Si el valor no es 0 o vacío
+            if(saldo_jugadorA[moneda]) {
+                saldo_jugadorA[moneda] += valor;
+            } else {
+                saldo_jugadorA[moneda] = valor;
+            }
+        }
+    });
+
     // Jugador B
-    let monedaB = document.querySelector('.jugadorB + .divisas').value;
-    let saldoB = parseFloat(document.getElementById('saldo_jugadorB').value) || 0;
-    saldo_jugadorB[monedaB] = saldoB;
+    let monedasB = document.querySelectorAll('.cargar_jugadorB + .divisas');
+    let inputsB = document.querySelectorAll('.cargar_jugadorB');
+    
+    inputsB.forEach((input, index) => {
+        let valor = parseFloat(input.value) || 0;
+        let moneda = monedasB[index].value;
+
+        if(valor !== 0) { // Si el valor no es 0 o vacío
+            if(saldo_jugadorB[moneda]) {
+                saldo_jugadorB[moneda] += valor;
+            } else {
+                saldo_jugadorB[moneda] = valor;
+            }
+        }
+    });
 
     displayResults(); // Esta función mostrará los saldos actualizados
 }
+
 
 
 // Al cargar la página, se recuperan los valores guardados
@@ -139,12 +200,14 @@ document.getElementById('euroToUsdt').addEventListener('change', saveToLocalStor
 
 document.addEventListener("DOMContentLoaded", loadGameHistory);
 
-
-
-
-
 function declareWinner(ganador) {
     let apuestaA = parseFloat(document.getElementById("apuestaA").value);
+
+    if (isNaN(apuestaA) || apuestaA === 0) {
+        alert("Por favor, ingrese una cantidad de apuesta para el jugador A.");
+        return;  // Salir de la función si no hay valor válido en apuestaA
+    }
+
     let monedaA = document.getElementById("monedaA").value;
     let monedaB = document.getElementById("monedaB").value;
     let apuestaB = convertCurrency(apuestaA, monedaA, monedaB);
@@ -154,12 +217,14 @@ function declareWinner(ganador) {
         comision = getCommission(apuestaA, monedaA);
         if (saldo_jugadorA[monedaA] != 0) {
             saldoGanado = apuestaA - comision; // Solo sumar la apuesta descontando la comisión
+            
         } else {
             saldoGanado = apuestaA + apuestaA - comision; // Sumar doble de la apuesta descontando la comisión
         }
         saldo_jugadorA[monedaA] += saldoGanado;
         saldo_jugadorB[monedaB] -= apuestaB;
 
+        updateGameHistory(ganador, saldoGanado, monedaA);  // Pasamos monedaA como tercer argumento
 
     } else {
         comision = getCommission(apuestaB, monedaB);
@@ -170,19 +235,41 @@ function declareWinner(ganador) {
         }
         saldo_jugadorB[monedaB] += saldoGanado;
         saldo_jugadorA[monedaA] -= apuestaA;
-
+        updateGameHistory(ganador, saldoGanado, monedaB);  // Pasamos monedaB como tercer argumento
     }
 
     displayResults();
-    updateGameHistory(ganador, saldoGanado);  // Agregar la actualización del historial después de determinar el ganador
+
 }
 
 
-function updateGameHistory(winner, amountWon) {
+document.getElementById("showHistorial").addEventListener('click', openPopup);
+document.getElementById("reiniciarHistorial").addEventListener('click', function() {
+    localStorage.removeItem('gameHistory');
+    displayGameHistory();
+});
+
+document.getElementById('showHistorial').addEventListener('click', function() {
+    openPopup();
+    loadGameHistory();
+});
+
+function openPopup() {
+    document.getElementById('popup').style.display = 'block';
+    document.getElementById('overlay').style.display = 'block';
+}
+
+function closePopup() {
+    document.getElementById('popup').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none';
+}
+
+function updateGameHistory(winner, amountWon, currencyWon) { // Agregamos un tercer parámetro: currencyWon
     const historyItem = {
         date: new Date().toLocaleString(),
         winner: winner,
-        amountWon: amountWon
+        amountWon: amountWon,
+        currency: currencyWon // Agregamos esta línea para almacenar la moneda en la que ganó
     };
 
     let gameHistory = JSON.parse(localStorage.getItem('gameHistory') || '[]');
@@ -201,14 +288,17 @@ function displayGameHistory() {
 
     gameHistory.forEach(item => {
         let listItem = document.createElement('li');
-        listItem.textContent = `Fecha: ${item.date}, Ganador: Jugador ${item.winner}, Monto Ganado: ${item.amountWon}`;
+        listItem.textContent = `Fecha: ${item.date}, Ganador: Jugador ${item.winner}, Monto Ganado: ${item.amountWon} ${item.currency}`; // Modificamos para incluir item.currency
         historyContainer.appendChild(listItem);
     });
 }
 
+
 function loadGameHistory() {
     displayGameHistory();
 }
+
+
 
 document.getElementById('reiniciarHistorial').addEventListener('click', resetGameHistory);
 
@@ -221,6 +311,31 @@ function resetGameHistory() {
 }
 
 function displayResults() {
+    let fiarA = document.querySelector(".fiarA").checked; // Suponiendo que el checkbox para el jugador A tiene la clase 'fiarA'
+    let fiarB = document.querySelector(".fiarB").checked; // Suponiendo que el checkbox para el jugador B tiene la clase 'fiarB'
+
+    // Jugador A
+    if (!fiarA && saldo_jugadorA['USDT'] < 0) {
+        saldo_jugadorA['USDT'] = 0;
+    }
+    if (!fiarA && saldo_jugadorA['EURO'] < 0) {
+        saldo_jugadorA['EURO'] = 0;
+    }
+    if (!fiarA && saldo_jugadorA['CREDITOS'] < 0) {
+        saldo_jugadorA['CREDITOS'] = 0;
+    }
+
+    // Jugador B
+    if (!fiarB && saldo_jugadorB['USDT'] < 0) {
+        saldo_jugadorB['USDT'] = 0;
+    }
+    if (!fiarB && saldo_jugadorB['EURO'] < 0) {
+        saldo_jugadorB['EURO'] = 0;
+    }
+    if (!fiarB && saldo_jugadorB['CREDITOS'] < 0) {
+        saldo_jugadorB['CREDITOS'] = 0;
+    }
+
     document.getElementById("saldoA-USDT").textContent = saldo_jugadorA['USDT'];
     document.getElementById("saldoA-EURO").textContent = saldo_jugadorA['EURO'];
     document.getElementById("saldoA-CREDITOS").textContent = saldo_jugadorA['CREDITOS'];
@@ -232,6 +347,9 @@ function displayResults() {
     localStorage.setItem('saldo_jugadorA', JSON.stringify(saldo_jugadorA));
     localStorage.setItem('saldo_jugadorB', JSON.stringify(saldo_jugadorB));
 }
+
+
+
 
 // Al inicio, verificamos si hay saldos guardados en localStorage
 if (localStorage.getItem('saldo_jugadorA')) {
@@ -248,40 +366,42 @@ displayResults();
 
 // ... restante del archivo ...
 
-function copyBalancesToClipboard() {
-    let saldosString = "";
+const CURRENCIES = ['USDT', 'EURO', 'CREDITOS'];
 
-    // Jugador A
-    if (saldo_jugadorA['USDT'] !== 0) {
-        saldosString += `Jugador A - USDT: ${saldo_jugadorA['USDT']}\n`;
-    }
-    if (saldo_jugadorA['EURO'] !== 0) {
-        saldosString += `Jugador A - EURO: ${saldo_jugadorA['EURO']}\n`;
-    }
-    if (saldo_jugadorA['CREDITOS'] !== 0) {
-        saldosString += `Jugador A - CREDITOS: ${saldo_jugadorA['CREDITOS']}\n`;
-    }
+function getBalanceString(saldo, jugadorName) {
+    return CURRENCIES.map(currency => {
+        if (saldo[currency] !== 0) {
+            return `${jugadorName}: ${saldo[currency]}\n ${currency} `;
+        }
+        return '';
+    }).join('');
+}
 
-    // Jugador B
-    if (saldo_jugadorB['USDT'] !== 0) {
-        saldosString += `Jugador B - USDT: ${saldo_jugadorB['USDT']}\n`;
-    }
-    if (saldo_jugadorB['EURO'] !== 0) {
-        saldosString += `Jugador B - EURO: ${saldo_jugadorB['EURO']}\n`;
-    }
-    if (saldo_jugadorB['CREDITOS'] !== 0) {
-        saldosString += `SJugador B - CREDITOS: ${saldo_jugadorB['CREDITOS']}\n`;
-    }
-
-    let textArea = document.createElement("textarea");
-    textArea.value = saldosString;
+function copyToClipboard(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
     document.body.appendChild(textArea);
     textArea.select();
     document.execCommand("Copy");
     textArea.remove();
-
     showToast();
 }
+
+function copyBalancesToClipboard() {
+    let saldosString = getBalanceString(saldo_jugadorA, "Jugador A") + getBalanceString(saldo_jugadorB, "Jugador B");
+    copyToClipboard(saldosString);
+}
+
+function copyBalancesJugadorA() {
+    let saldosString = getBalanceString(saldo_jugadorA, "Jugador A");
+    copyToClipboard(saldosString);
+}
+
+function copyBalancesJugadorB() {
+    let saldosString = getBalanceString(saldo_jugadorB, "Jugador B");
+    copyToClipboard(saldosString);
+}
+
 
 function showToast() {
     let toast = document.getElementById("toast");

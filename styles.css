@@ -34,7 +34,9 @@ body {
     background-color: #a1a1a1;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     --background-color: #ffffff;
-    
+    border: none; /* Elimina el borde */
+    border-radius: 10px; /* Agrega bordes redondeados */
+    margin: 20px; /* Añade un pequeño margen entre los contenedores */
 }
 
 .container-left{
@@ -68,6 +70,18 @@ h1, h2, h3 {
 }
 
 input[type="number"]{
+    width: 12%;
+    padding: 10px 15px;
+    margin: 10px 0;
+    border: 1px solid var(--light-text-color);
+    border-radius: 4px;
+    background-color: var(--background-color);
+    font-size: 16px;
+    margin-top: 5px;
+    text-align: center;
+}
+
+#apuestaBOutput{
     width: 12%;
     padding: 10px 15px;
     margin: 10px 0;
@@ -117,6 +131,7 @@ select {
 
 button {
     padding: 10px 20px;
+    margin-top: 10px;
     background-color: var(--primary-color);
     border: none;
     border-radius: 4px;
@@ -166,9 +181,6 @@ button:hover {
 }
 
 
-#resultados{
-    margin-top: 20px;
-}
 
 
 .img-flag {
@@ -180,13 +192,11 @@ button:hover {
     text-align: center;
 }
 
-#calcular{
-    margin-bottom: 15px;
-}
+
 
 label {
     display: block;
-    margin-top: 20px;
+    margin-top: 0px;
     font-weight: bold;
 }
 
@@ -203,7 +213,6 @@ button.selected {
     margin-left: 5px;
     border-radius: 4px;
     border: none;
-    margin-bottom: 10px;
 
 }
 
@@ -229,6 +238,49 @@ button.selected {
     visibility: visible;
     opacity: 1;
 }
+
+.fiar {
+    display: inline;
+    gap: 10px; /* Esto agrega un espacio entre los checkboxes */
+}
+
+
+#popup {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: white;
+    border: 1px solid black;
+    z-index: 1000; /* Asegurarse de que aparezca por encima de otros contenidos */
+}
+/* Estilo básico para el fondo oscurecido del pop-up */
+#overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 999; /* Aparece detrás del pop-up */
+}
+
+
+#historialPartidas {
+    max-height: 200px; /* Puedes ajustar esta medida a lo que necesites */
+    overflow-y: auto; /* Habilita el desplazamiento vertical si el contenido excede la altura máxima */
+    padding-right: 15px; /* Para evitar que el scroll estreche el contenido, este valor se puede ajustar */
+}
+
+
+
+
+
+
+
 
 /* Media Queries */
 @media only screen and (max-width: 1500px) {
@@ -336,3 +388,4 @@ button.selected {
         margin-bottom: 5px; /* Espacio entre el label y el input en modo vertical */
     }
 }
+

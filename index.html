@@ -29,7 +29,7 @@
     <div class="input-group2">
 
         <label>Jugador A</label>
-        <input type="number" id="saldo_jugadorA" class = "jugadorA" placeholder="SALDO">
+        <input type="number" id="saldo_jugadorA" class = "cargar_jugadorA" placeholder="SALDO">
         <select class="divisas">
             <option value="USDT" data-thumbnail="./img/usdt.png">USDT</option>
             <option value="EURO" data-thumbnail="./img/euro.png">EURO</option>
@@ -40,7 +40,7 @@
 
     <div class="input-group2">
         <label>Jugador B</label>
-        <input type="number" id="saldo_jugadorB" class = "jugadorB" placeholder="SALDO">
+        <input type="number" id="saldo_jugadorB" class = "cargar_jugadorB" placeholder="SALDO">
         <select  class="divisas">
             <option value="USDT" data-thumbnail="./img/usdt.png">USDT</option>
             <option value="EURO" data-thumbnail="./img/euro.png">EURO</option>
@@ -52,15 +52,14 @@
     <button onclick="setInitialBalances()">Establecer Saldos</button>
 </div>
 
-</div>
 
 
     <div class="container">
-        <h1>CALCULADORA DE SALDOS</h1>
 
-        
         <div class="input-group">
+            <h1>CALCULADORA DE SALDOS</h1>
             <label>Apuesta Jugador A:</label>
+            <label class="fiar"> Fiar <input class="fiarA" type="checkbox"></label>
             <input type="number" id="apuestaA" class = "jugadorA" placeholder="APUESTA">
             <select id="monedaA" class="divisas">
                 <option value="USDT" data-thumbnail="./img/usdt.png">USDT</option>
@@ -68,20 +67,22 @@
                 <option value="CREDITOS" data-thumbnail="./img/credito.png" class="creditos">CREDITS</option>
 
             </select>
-            
-        </div>
+        </div>       
 
+        <div class="input-group">
 
-        <div class="input-group" id="calcular">
-            <label>Moneda Jugador B:</label>
-            <select id="monedaB" class="divisas">
+            <label>Apuesta Jugador B:</label>
+            <label class="fiar"> Fiar <input class="fiarB" type="checkbox"></label>
+            <input id="apuestaBOutput" readonly placeholder="APUESTA">
+            <select id="monedaB" class="divisas" >
                 <option value="USDT" data-thumbnail="./img/usdt.png">USDT</option>
                 <option value="EURO" data-thumbnail="./img/euro.png">EURO</option>
                 <option value="CREDITOS" data-thumbnail="./img/credito.png" class="creditos">CREDITS</option>
             </select>
+
         </div>
-        <button onclick="calculateBets()">Calcular Apuestas</button>
-        <h3 id="apuestaBOutput"></h3>
+
+
         <!-- Otros elementos ... -->
         <div class="input-group">
             <label>Ganador:</label>
@@ -96,13 +97,20 @@
                 USDT: <span id="saldoA-USDT">0</span>,
                 EURO: <span id="saldoA-EURO">0</span>,
                 CREDITOS: <span id="saldoA-CREDITOS">0</span>
+                <button class="copy-btn" onclick="copyBalancesJugadorA()">Copiar</button>
             </h3>
+
             <h3>Saldo Jugador B: 
                 USDT: <span id="saldoB-USDT">0</span>,
                 EURO: <span id="saldoB-EURO">0</span>,
                 CREDITOS: <span id="saldoB-CREDITOS">0</span>
+                <button class="copy-btn" onclick="copyBalancesJugadorB()">Copiar</button>
             </h3>
+
+
             <button class="copy-btn" onclick="copyBalancesToClipboard()">Copiar Saldos</button>
+
+
             <div id="toast" class="toast">Saldos copiados al portapapeles!</div>
         </div>
         
@@ -112,13 +120,21 @@
 
     </div>
     <div class="container-right">
-        <h2>Historial de Partidas</h2>
-        <button id="reiniciarHistorial">Reiniciar Historial</button>
-        <ul id="historialPartidas"></ul>
+        <!-- Botón para mostrar el historial de partidas -->
+        <button id="showHistorial">Mostrar Historial de Partidas</button>
+
+        <!-- Estructura del pop-up -->
+        <div id="overlay"></div>
+            <div id="popup">
+            <h2>Historial de Partidas</h2>
+            <button id="reiniciarHistorial">Reiniciar Historial</button>
+            <ul id="historialPartidas"></ul>
+            <button onclick="closePopup()">Cerrar</button>
+        </div>
+
     </div>
     
 
-    </div>
     <script src="scripts.js"></script>
 </body>
 </html>
