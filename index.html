@@ -61,6 +61,7 @@
             <label>Apuesta Jugador A:</label>
             <label class="fiar"> Fiar <input class="fiarA" type="checkbox"></label>
             <input type="number" id="apuestaA" class = "jugadorA" placeholder="APUESTA">
+            <span id="comisionA">Comisión: 0</span>
             <select id="monedaA" class="divisas">
                 <option value="USDT" data-thumbnail="./img/usdt.png">USDT</option>
                 <option value="EURO" data-thumbnail="./img/euro.png">EURO</option>
@@ -70,7 +71,6 @@
         </div>       
 
         <div class="input-group">
-
             <label>Apuesta Jugador B:</label>
             <label class="fiar"> Fiar <input class="fiarB" type="checkbox"></label>
             <input id="apuestaBOutput" readonly placeholder="APUESTA">
@@ -129,14 +129,17 @@
             <h2>Historial de Partidas</h2>
             <button id="reiniciarHistorial">Reiniciar Historial</button>
             <ul id="historialPartidas"></ul>
+            <h2>Historial de Puntos</h2>
+            <button id="reiniciarPuntos">Reiniciar Puntos</button>
+            <ul id="historialPuntos"></ul>
             <button onclick="closePopup()">Cerrar</button>
         </div>
         <div class="puntos-section">
-            <h3>Puntos</h3>
+            <h2>PUNTOS</h2>
+            <h3>
             Jugador A: <span id="puntosA"></span>
             Jugador B: <span id="puntosB"></span>
-
-
+         </h3>
         </div>
 
         
